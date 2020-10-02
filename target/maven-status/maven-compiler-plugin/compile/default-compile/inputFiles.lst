@@ -1,0 +1,9 @@
+/root/kubernetes/spring-boot-postgresql/src/main/java/com/example/postgresdemo/model/Question.java
+/root/kubernetes/spring-boot-postgresql/src/main/java/com/example/postgresdemo/controller/QuestionController.java
+/root/kubernetes/spring-boot-postgresql/src/main/java/com/example/postgresdemo/repository/QuestionRepository.java
+/root/kubernetes/spring-boot-postgresql/src/main/java/com/example/postgresdemo/exception/ResourceNotFoundException.java
+/root/kubernetes/spring-boot-postgresql/src/main/java/com/example/postgresdemo/model/AuditModel.java
+/root/kubernetes/spring-boot-postgresql/src/main/java/com/example/postgresdemo/model/Answer.java
+/root/kubernetes/spring-boot-postgresql/src/main/java/com/example/postgresdemo/PostgresDemoApplication.java
+/root/kubernetes/spring-boot-postgresql/src/main/java/com/example/postgresdemo/repository/AnswerRepository.java
+/root/kubernetes/spring-boot-postgresql/src/main/java/com/example/postgresdemo/controller/AnswerController.java
