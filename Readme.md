@@ -5,12 +5,13 @@ Pre-requisites:
     - Install Git
     - Install Maven
     - Install Docker
-    - EKS Cluster
-    
+    - EKS Cluster with eksctl commands
+    - Install ALB Ingress Controller
+    - Create Cerificate for our domain in Certificate manager
 Clone code from github:
 -------
-    git clone https://github.com/VamsiTechTuts/kubernetes.git
-    cd kubernetes/spring-boot-postgresql/
+    git clone https://github.com/Naresh240/external-dns-springbootWithDatabase.git
+    cd external-dns-springbootWithDatabase
     
 Build Maven Artifact:
 -------
@@ -18,7 +19,7 @@ Build Maven Artifact:
  
 Build Docker image for Springboot Application
 --------------
-    docker build -t vamsitechtuts/springbootpostgresrestapidemo .
+    docker build -t naresh240/springbootpostgresrestapidemo .
   
 Docker login
 -------------
@@ -26,7 +27,7 @@ Docker login
     
 Push docker image to dockerhub
 -----------
-    docker push vamsitechtuts/springbootpostgresrestapidemo
+    docker push naresh240/springbootpostgresrestapidemo
 
 Encode USERNAME and PASSWORD of Postgres using following commands:
 --------
@@ -53,9 +54,8 @@ Deploy Spring Application:
 --------
     kubectl apply -f springboot-deployment.yml
     kubectl apply -f springboot-service.yml
-    
-Check secrets:
--------
+
+# Check secrets, configmaps, pv, pvc, deployments, pods and services:
     kubectl get secrets
     kubectl get configmaps
     kubectl get pv
@@ -64,11 +64,21 @@ Check secrets:
     kubectl get pods
     kubectl get svc
     
-Now Goto Loadbalancer and check whether service comes Inservice or not, If it comes Inservice copy DNS Name of Loadbalancer and Give in POSTMAN App
+Now Goto Loadbalancer and check whether service comes Inservice or not, If it comes Inservice run ingress file
+
+# Run Ingress file using below command
+    kubectl apply -f springboot-ingress.yml
+    
+# Check ingress attached to ALB ingress controller or not:
+    kubectl get ingress
+![image](https://user-images.githubusercontent.com/58024415/94955690-986ba200-0508-11eb-9eac-8c6257bb7035.png)
+
+# Add "A" Record with in Route53
+![image](https://user-images.githubusercontent.com/58024415/94956726-49267100-050a-11eb-9611-f4a512edc381.png)
 
 Use POST Method:
 --------
-    http://a64d28d4626484b2687437bb81935d71-65005852.us-west-2.elb.amazonaws.com:8080/questions
+    http://springboot.cloudtechmasters.ml/questions
     select raw and Json format with in the Body section
         {
 	          "title": "Which country you belongs too?",
@@ -76,13 +86,13 @@ Use POST Method:
         }
 Use GET Method:
 -------
-    http://a64d28d4626484b2687437bb81935d71-65005852.us-west-2.elb.amazonaws.com:8080/questions
+    http://springboot.cloudtechmasters.ml/questions
     
 Use POST Method:
 --------
-http://<LoadBalancer-DNS>:8080/questions/{questionId}/answers
+http://springboot.cloudtechmasters.ml/questions/{questionId}/answers
     
-    http://a64d28d4626484b2687437bb81935d71-65005852.us-west-2.elb.amazonaws.com:8080/questions/1000/answers
+    http://springboot.cloudtechmasters.ml/questions/1000/answers
     select raw and Json format with in the Body section
         {
 	          "text": "I am an Indian"
@@ -90,12 +100,12 @@ http://<LoadBalancer-DNS>:8080/questions/{questionId}/answers
   
 Use GET Method:
 -------
-    http://a64d28d4626484b2687437bb81935d71-65005852.us-west-2.elb.amazonaws.com:8080/questions/1000/answers
+    http://springboot.cloudtechmasters.ml/questions/1000/answers
 
 You can Test other API also.........
 
-Cluean UP process:
--------
+# Cluean UP process:
+    kubectl delete ingress springboot-ingress
     kubectl delete deploy spring-boot-postgres-sample postgres
     kubectl delete svc spring-boot-postgres-sample postgres
     kubectl delete pvc postgres-pv-claim
