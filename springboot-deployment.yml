@@ -32,4 +32,4 @@ spec:
               configMapKeyRef:
                 name: hostname-config
                 key: postgres_host
-        image: vamsitechtuts/springbootpostgresrestapidemo:latest
+        image: naresh240/springbootpostgresrestapidemo
